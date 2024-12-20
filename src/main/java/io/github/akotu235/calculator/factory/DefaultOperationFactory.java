@@ -9,6 +9,7 @@ public class DefaultOperationFactory implements OperationFactory {
             case "add" -> new AdditionOperation();
             case "subtract" -> new SubtractionOperation();
             case "multiply" -> new MultiplicationOperation();
+            case "divide" -> new DivisionOperation();
             default -> throw new IllegalArgumentException("Unknown operation: " + operationType);
         };
     }
