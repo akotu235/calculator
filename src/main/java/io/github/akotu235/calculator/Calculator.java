@@ -23,7 +23,7 @@ public class Calculator {
         }
 
         try{
-            return new Result(operation.execute(operationData.getNumbers()[0], operationData.getNumbers()[1]));
+            return new Result(operation.execute(operationData.getNumbers()));
         } catch (OperationException e) {
             return new Result(e.getMessage());
         }

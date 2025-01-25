@@ -4,10 +4,10 @@ import io.github.akotu235.calculator.exception.operation.DivisionByZeroException
 
 public class DivisionOperation implements Operation {
     @Override
-    public double execute(double a, double b) {
-        if (b == 0) {
+    public double execute(double[] args) {
+        if (args[1] == 0) {
             throw new DivisionByZeroException("Division by zero is not allowed.");
         }
-        return a / b;
+        return args[0] / args[1];
     }
 }
