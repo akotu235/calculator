@@ -1,7 +1,10 @@
 package io.github.akotu235.calculator;
 
+import io.github.akotu235.calculator.exception.operation.OperationException;
 import io.github.akotu235.calculator.factory.OperationFactory;
-import io.github.akotu235.calculator.operations.Operation;
+import io.github.akotu235.calculator.model.Result;
+import io.github.akotu235.calculator.operation.Operation;
+import io.github.akotu235.calculator.model.OperationData;
 
 public class Calculator {
     private final OperationFactory operationFactory;
@@ -10,8 +13,19 @@ public class Calculator {
         this.operationFactory = operationFactory;
     }
 
-    public double calculate(String operationType, double a, double b) {
-        Operation operation = operationFactory.createOperation(operationType);
-        return operation.execute(a, b);
+    public Result calculate(OperationData operationData) {
+        Operation operation;
+        try {
+            operation = operationFactory.createOperation(operationData.getOperation());
+        }
+        catch (OperationException e) {
+            return new Result(e.getMessage());
+        }
+
+        try{
+            return new Result(operation.execute(operationData.getNumbers()[0], operationData.getNumbers()[1]));
+        } catch (OperationException e) {
+            return new Result(e.getMessage());
+        }
     }
 }
