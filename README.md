@@ -6,6 +6,7 @@ Ten projekt to prosty kalkulator w języku Java, który można łatwo rozszerza�
 ## Funkcje
 - Wykonywanie podstawowych operacji matematycznych, takich jak dodawanie, odejmowanie, mnożenie i dzielenie.
 - Łatwe rozszerzanie o nowe operacje bez modyfikacji istniejącego kodu.
+- Możliwość wyboru źródła danych: odczyt danych z pliku JSON lub wprowadzanie ich z klawiatury.
 - Wykorzystanie wzorców projektowych zapewniających czytelny, łatwy w utrzymaniu i skalowalny kod.
 
 ## Przegląd kodu
@@ -13,7 +14,7 @@ Ten projekt to prosty kalkulator w języku Java, który można łatwo rozszerza�
 ### Kluczowe komponenty
 
 1. **Interfejs `Operation`**
-   - Definiuje jedną metodę: `execute(double a, double b)`.
+   - Definiuje jedną metodę: `execute(double[] args)`.
    - Reprezentuje strategię dla operacji matematycznych.
 
 2. **Konkretne operacje**
@@ -39,22 +40,40 @@ Ten projekt to prosty kalkulator w języku Java, który można łatwo rozszerza�
 3. Wybrana strategia operacji wykonuje logikę obliczeń.
 
 ### Przykład użycia
-```java
-OperationFactory factory = new DefaultOperationFactory();
-Calculator calculator = new Calculator(factory);
 
-System.out.println("Dodawanie: " + calculator.calculate("add", 10, 5)); // Wynik: 15.0
-System.out.println("Odejmowanie: " + calculator.calculate("subtract", 10, 5)); // Wynik: 5.0
-System.out.println("Mnożenie: " + calculator.calculate("multiply", 10, 5)); // Wynik: 50.0
-System.out.println("Dzielenie: " + calculator.calculate("divide", 10, 5)); // Wynik: 2.0
-```
+Aplikacja obsługuje dwa tryby działania:
+
+1. **Dane wejściowe z pliku JSON**
+   - Jeśli podczas uruchamiania aplikacji przekażesz ścieżkę do pliku JSON jako argument, kalkulator wykona działanie zgodnie z informacjami zawartymi w tym pliku.
+   - Przykładowy JSON:
+     ```json
+     { 
+       "operation": "add", 
+       "numbers": [5, 3] 
+     }
+     ```
+   - Uruchomienie:
+     ```bash
+     java -jar calculator.jar ścieżka/do/pliku.json
+     ```
+   - Wynik operacji zostanie wyświetlony w konsoli.
+
+2. **Dane wejściowe z klawiatury**
+   - Jeśli nie przekażesz pliku JSON, aplikacja poprosi o wprowadzenie danych z klawiatury:
+      - Nazwa operacji (np. `add`, `subtract`).
+      - Dwie liczby oddzielnie.
+   - Po podaniu danych wynik zostanie wyświetlony w konsoli.
 
 ## Zastosowane wzorce projektowe
 
 ### 1. Wzorzec Strategii
 - **Cel**: Hermetyzacja rodziny algorytmów (operacji) i umożliwienie ich wymienności.
-- **Zastosowanie**: Każda operacja matematyczna (dodawanie, odejmowanie, itd.) jest zaimplementowana jako osobna klasa implementująca wspólny interfejs (`Operation`).
-- **Korzyść**: Dodanie nowej operacji wymaga utworzenia nowej klasy bez modyfikacji istniejącego kodu, co jest zgodne z zasadą otwarte-zamknięte.
+- **Zastosowanie**: 
+  - Każda operacja matematyczna (dodawanie, odejmowanie itd.) jest zaimplementowana jako osobna klasa implementująca wspólny interfejs (`Operation`).
+  - Wybór sposobu odczytu danych wejściowych (z pliku JSON lub z klawiatury) również wykorzystuje wzorzec Strategii. Dla każdego sposobu odczytu została zaimplementowana osobna klasa realizująca wspólny interfejs, co umożliwia łatwe dodawanie nowych metod wczytywania danych w przyszłości.
+- **Korzyść**: 
+  - Dodanie nowej operacji wymaga utworzenia nowej klasy bez modyfikacji istniejącego kodu, co jest zgodne z zasadą otwarte-zamknięte.
+  - Łatwe rozszerzanie sposobów wczytywania danych wejściowych bez ingerencji w logikę kalkulatora.
 
 ### 2. Wzorzec Fabryki Abstrakcyjnej
 - **Cel**: Dostarczenie interfejsu do tworzenia rodzin powiązanych obiektów bez określania ich konkretnych klas.
@@ -81,6 +100,5 @@ System.out.println("Dzielenie: " + calculator.calculate("divide", 10, 5)); // Wy
 - Dodanie obsługi zaawansowanych operacji (np. trygonometrycznych, logarytmicznych).
 - Wprowadzenie dynamicznego ładowania operacji przy użyciu refleksji, aby wyeliminować konieczność modyfikowania fabryki.
 - Dodanie testów jednostkowych dla wszystkich komponentów.
-
-## Wymagania i uruchomienie
-Projekt wymaga Javy 8 lub nowszej. Wystarczy sklonować repozytorium, skompilować kod i uruchomić klasę `Main`.
+- Dodanie możliwości przetwarzania wyrażeń złożonych, takich jak 2 + 3 * 5, z poprawnym priorytetem operacji.
+- Dodanie obsługi operacji na macierzach (np. dodawanie macierzy) jako nowej strategii.
