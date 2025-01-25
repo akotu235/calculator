@@ -1,16 +1,17 @@
 package io.github.akotu235.calculator.factory;
 
-import io.github.akotu235.calculator.operations.*;
+import io.github.akotu235.calculator.exception.operation.UnsupportedOperationException;
+import io.github.akotu235.calculator.operation.*;
 
 public class DefaultOperationFactory implements OperationFactory {
     @Override
     public Operation createOperation(String operationType) {
         return switch (operationType.toLowerCase()) {
-            case "add" -> new AdditionOperation();
-            case "subtract" -> new SubtractionOperation();
-            case "multiply" -> new MultiplicationOperation();
-            case "divide" -> new DivisionOperation();
-            default -> throw new IllegalArgumentException("Unknown operation: " + operationType);
+            case "add", "+" -> new AdditionOperation();
+            case "subtract", "-" -> new SubtractionOperation();
+            case "multiply", "*" -> new MultiplicationOperation();
+            case "divide", "/" -> new DivisionOperation();
+            default -> throw new UnsupportedOperationException("Unsupported operation: " + operationType);
         };
     }
 }
