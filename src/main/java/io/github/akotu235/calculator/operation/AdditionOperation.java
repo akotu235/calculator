@@ -1,4 +1,4 @@
-package io.github.akotu235.calculator.operations;
+package io.github.akotu235.calculator.operation;
 
 public class AdditionOperation implements Operation {
     @Override
